@@ -5,6 +5,7 @@ import net.minecraft.client.gui.chat.ChatGui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ChatGui.class)
 public abstract class ChatGuiMixin {
@@ -32,5 +33,17 @@ public abstract class ChatGuiMixin {
 	)
 	private float guiCustomizer$adjustChatHeight(float x) {
 		return x - 12;
+	}
+
+	@ModifyVariable(
+		method = "getMessageAt",
+		at = @At(
+			value = "STORE",
+			ordinal = 0
+		),
+		ordinal = 4
+	)
+	private int guiCustomizer$adjustClickHeight(int original) {
+		return original - 12;
 	}
 }
